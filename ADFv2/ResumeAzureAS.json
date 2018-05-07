@@ -1,0 +1,166 @@
+{
+    "name": "ResumeAzureAS",
+    "properties": {
+        "activities": [
+            {
+                "name": "Login",
+                "type": "WebActivity",
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false
+                },
+                "typeProperties": {
+                    "url": {
+                        "value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantID,'/oauth2/token')",
+                        "type": "Expression"
+                    },
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    "body": {
+                        "value": "@concat('grant_type=client_credentials&resource=https://management.core.windows.net/&client_id=',pipeline().parameters.ClientID,'&client_secret=',encodeUriComponent(pipeline().parameters.ClientSecret))",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "IfAzureASPaused",
+                "type": "IfCondition",
+                "dependsOn": [
+                    {
+                        "activity": "CheckIfAzureASSuspended",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "expression": {
+                        "value": "@not(equals('Succeeded',string(activity('CheckIfAzureASSuspended').output.properties.state)))",
+                        "type": "Expression"
+                    },
+                    "ifTrueActivities": [
+                        {
+                            "name": "ResumeAzureAS",
+                            "type": "WebActivity",
+                            "policy": {
+                                "timeout": "7.00:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false
+                            },
+                            "typeProperties": {
+                                "url": {
+                                    "value": "@concat('https://management.azure.com/subscriptions/',pipeline().parameters.SubscriptionID,'/resourceGroups/',pipeline().parameters.ResourceGroup,'/providers/Microsoft.AnalysisServices/servers/',pipeline().parameters.Server,'/resume?api-version=2016-05-16')",
+                                    "type": "Expression"
+                                },
+                                "method": "POST",
+                                "headers": {
+                                    "Authorization": "@concat(string(activity('Login').output.token_type),' ',string(activity('Login').output.access_token))"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "CheckIfAzureASSuspended",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "Login",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false
+                },
+                "typeProperties": {
+                    "url": {
+                        "value": "@concat('https://management.azure.com/subscriptions/',pipeline().parameters.SubscriptionID,'/resourceGroups/',pipeline().parameters.ResourceGroup,'/providers/Microsoft.AnalysisServices/servers/',pipeline().parameters.Server,'?api-version=2016-05-16')",
+                        "type": "Expression"
+                    },
+                    "method": "GET",
+                    "headers": {
+                        "Authorization": "@concat(string(activity('Login').output.token_type),' ',string(activity('Login').output.access_token))"
+                    }
+                }
+            },
+            {
+                "name": "UntilAzureASResumed",
+                "type": "Until",
+                "dependsOn": [
+                    {
+                        "activity": "IfAzureASPaused",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "expression": {
+                        "value": "@equals('Succeeded',string(activity('CheckAzureASStatus').output.properties.state))",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "CheckAzureASStatus",
+                            "type": "WebActivity",
+                            "policy": {
+                                "timeout": "7.00:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false
+                            },
+                            "typeProperties": {
+                                "url": {
+                                    "value": "@concat('https://management.azure.com/subscriptions/',pipeline().parameters.SubscriptionID,'/resourceGroups/',pipeline().parameters.ResourceGroup,'/providers/Microsoft.AnalysisServices/servers/',pipeline().parameters.Server,'?api-version=2016-05-16')",
+                                    "type": "Expression"
+                                },
+                                "method": "GET",
+                                "headers": {
+                                    "Authorization": "@concat(string(activity('Login').output.token_type),' ',string(activity('Login').output.access_token))"
+                                }
+                            }
+                        }
+                    ],
+                    "timeout": "7.00:00:00"
+                }
+            }
+        ],
+        "parameters": {
+            "TenantID": {
+                "type": "String",
+                "defaultValue": ""
+            },
+            "ClientID": {
+                "type": "String",
+                "defaultValue": ""
+            },
+            "ClientSecret": {
+                "type": "String",
+                "defaultValue": ""
+            },
+            "SubscriptionID": {
+                "type": "String",
+                "defaultValue": ""
+            },
+            "ResourceGroup": {
+                "type": "String",
+                "defaultValue": ""
+            },
+            "Server": {
+                "type": "String",
+                "defaultValue": ""
+            }
+        }
+    }
+}
