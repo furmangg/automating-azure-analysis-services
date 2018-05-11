@@ -50,6 +50,9 @@ Set the following parameters upon execution of the pipeline:
 * **ResourceGroup** - The name of the resource group where the Azure Analysis Services instance lives.
 * **Server** - The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
 
+The AAD application must be granted contribute permissions in the Access Control (IAM) in the Azure Analysis Services.
+
+
 #### ProcessAzureAS
 
 The ProcessAzureAS.json file (along with dsHttpApiAzureASRefreshes.json and lsHttpApiAzureAS.json files) show how to perform a full refresh of the data inside an Azure Analysis Services model. Unlike other solutions which leverage external services like Azure Logic Apps or custom ADF .NET activities running in Azure Batch, this approach uses only built-in activities which depend on no external services other than Azure Analysis Services.
@@ -63,6 +66,7 @@ Set the following parameters upon execution of the pipeline:
 * **Server** - The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
 * **DatabaseName** - The name of the database in Azure Analysis Services you wish to process.
 
+The AAD application must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
 
 ### Proposing Changes
 
