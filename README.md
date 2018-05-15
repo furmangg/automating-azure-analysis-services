@@ -87,6 +87,11 @@ If your ETL is orchestrated in SQL Server Integration Services, it is only natur
 * **SSIS/ProcessAzureAS-UsernamePassword.dtsx** - An SSIS package which authenticates using a username and password (which does not have multi-factor auth enabled) and performs a full refresh of the model. This package uses a C# script task. Follow the instructions in the annotation once you open the SSIS package.
 * **SSIS/ProcessAzureAS-App.dtsx** - An SSIS package which authenticates using an AAD application (ClientID and secret). This package uses a C# script task. Follow the instructions in the annotation once you open the SSIS package.
 
+### GeographicLoadBalancing
+
+Using Azure Traffic Manager it is possible to build a solution which redirects users to the geographically closest Azure Analysis Services. This [blog post](https://www.artisconsulting.com/blogs/greggalloway/2018/5/11/sending-users-to-the-geographically-nearest-azure-analysis-services) walks through the configuration of this solution. The code is really just one line but is found at AutoStartAzureAS/Default.aspx.cs
+
+
 
 ### Proposing Changes
 
