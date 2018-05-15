@@ -69,7 +69,7 @@ Set the following parameters upon execution of the pipeline:
 The AAD application must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
 
 
-#### LinkedServer
+### LinkedServer
 
 Connecting to Azure Analysis Services with a SQL Server linked server enables a number of scenarios:
 
@@ -80,7 +80,7 @@ Connecting to Azure Analysis Services with a SQL Server linked server enables a 
 The "LinkedServer/SQL Linked Server to Azure Analysis Services.sql" file shows an example of the linked server setup and how to use it.
 
 
-#### SSIS
+### SSIS
 
 If your ETL is orchestrated in SQL Server Integration Services, it is only natural to refresh your Azure Analysis Services models using SSIS. We prefer C# script tasks for cube processing over the Analysis Services Processing command because the Analysis Services Processing command hardcodes the SSAS database at design time while the C# code can process the database identified in the connection string such that runtime configuration can cause it to process a different database.
 
