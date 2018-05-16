@@ -87,6 +87,19 @@ If your ETL is orchestrated in SQL Server Integration Services, it is only natur
 * **SSIS/ProcessAzureAS-UsernamePassword.dtsx** - An SSIS package which authenticates using a username and password (which does not have multi-factor auth enabled) and performs a full refresh of the model. This package uses a C# script task. Follow the instructions in the annotation once you open the SSIS package.
 * **SSIS/ProcessAzureAS-App.dtsx** - An SSIS package which authenticates using an AAD application (ClientID and secret). This package uses a C# script task. Follow the instructions in the annotation once you open the SSIS package.
 
+### BackupRestore
+
+The BackupRestore/BackupSsasRestoreAzureAS.ps1 PowerShell script performs a natively compressed backup of one or more databases on a SQL Server Analysis Services instance.
+
+Once backups are complete, the backups are uploaded to blob storage. Then blobs older than the specified retention period are deleted. Once uploads are complete, the local file is removed. Also, as a failsafe, local backup files older than the specified cleanup time (in hours) are removed from the local backup directory.
+
+Finally, the backup is restored to Azure Analysis Services from blob storage. The storage account specified for the upload of backups must match the storage account and container used for Azure Analysis Services' backup settings.
+    
+Requires AMO v15 or higher to enable authentication with an Azure Active Directory [service principal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal). Download the [AMO installer](https://docs.microsoft.com/en-us/azure/analysis-services/analysis-services-data-providers).
+
+Also requires the Microsoft.WindowsAzure.Storage.dll version 9.1 or higher.
+
+
 ### GeographicLoadBalancing
 
 Using Azure Traffic Manager it is possible to build a solution which redirects users to the geographically closest Azure Analysis Services. This [blog post](https://www.artisconsulting.com/blogs/greggalloway/2018/5/11/sending-users-to-the-geographically-nearest-azure-analysis-services) walks through the configuration of this solution. The code is really just one line but is found at AutoStartAzureAS/Default.aspx.cs
