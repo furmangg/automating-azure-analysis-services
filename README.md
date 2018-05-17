@@ -1,7 +1,7 @@
 # Automating Azure Analysis Services - Code Samples
 My [SQL Saturday presentation](http://www.sqlsaturday.com/734/Sessions/Details.aspx?sid=77768) (slides available after May 19, 2018) included demos of various ways to automate Azure Analysis Services. These code samples are included here.
 
-### AutoStartAzureAS
+### [AutoStartAzureAS](https://github.com/furmangg/automating-azure-analysis-services/tree/master/AutoStartAzureAS)
 On premises solutions typically run at full scale 24 hours a day and 7 days a week. The cloud brings elasticity which allows the solution to scale down during off periods or burst up to meet peak capacity. Often this scaling is done on a schedule. The downside of scaling on a predictable schedule is that users don't always operate on a predictable schedule.
 
 The AutoStartAzureAS code sample is will start your Azure Analysis Services when the first user connects. This solution is a bit experimental. It may be a better choice for the Test environment rather than a Production environment until it proves to be stable in the real world. Leave a note on the Issues page sharing any real-world experience with this sample code.
@@ -46,7 +46,7 @@ The PauseIfNoQueries/PauseAzureAnalysisServicesIfNoQueries.ps1 is a PowerShell s
 
 Note: This solution will not properly detect all running queries if you have setup replicas in your Azure Analysis Services.
 
-### ADFv2
+### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)
 
 #### ResumeAzureAS
 
@@ -79,7 +79,7 @@ Set the following parameters upon execution of the pipeline:
 The AAD application must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
 
 
-### LinkedServer
+### [LinkedServer](https://github.com/furmangg/automating-azure-analysis-services/tree/master/LinkedServer)
 
 Connecting to Azure Analysis Services with a SQL Server linked server enables a number of scenarios:
 
@@ -90,7 +90,7 @@ Connecting to Azure Analysis Services with a SQL Server linked server enables a 
 The "LinkedServer/SQL Linked Server to Azure Analysis Services.sql" file shows an example of the linked server setup and how to use it.
 
 
-### SSIS
+### [SSIS](https://github.com/furmangg/automating-azure-analysis-services/tree/master/SSIS)
 
 If your ETL is orchestrated in SQL Server Integration Services, it is only natural to refresh your Azure Analysis Services models using SSIS. We prefer C# script tasks for cube processing over the Analysis Services Processing command because the Analysis Services Processing command hardcodes the SSAS database at design time while the C# code can process the database identified in the connection string such that runtime configuration can cause it to process a different database.
 
@@ -110,7 +110,7 @@ Requires AMO v15 or higher to enable authentication with an Azure Active Directo
 Also requires the Microsoft.WindowsAzure.Storage.dll version 9.1 or higher.
 
 
-### GeographicLoadBalancing
+### [GeographicLoadBalancing](https://www.artisconsulting.com/blogs/greggalloway/2018/5/11/sending-users-to-the-geographically-nearest-azure-analysis-services)
 
 Using Azure Traffic Manager it is possible to build a solution which redirects users to the geographically closest Azure Analysis Services. This [blog post](https://www.artisconsulting.com/blogs/greggalloway/2018/5/11/sending-users-to-the-geographically-nearest-azure-analysis-services) walks through the configuration of this solution. The code is really just one line but is found at AutoStartAzureAS/Default.aspx.cs
 
