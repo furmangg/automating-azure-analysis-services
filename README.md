@@ -35,6 +35,16 @@ Excel imposes a 30 second timeout when resolving the link:// URI which does not 
 
 Though Power BI Desktop appears to work well, the Power BI website has a pretty strict timeout which does not allow Azure Analysis Services time to start. There are no known workarounds for this at the moment. If you have a suggestion, leave one on the Issues tab.
 
+### [PauseIfNoQueries](https://github.com/furmangg/automating-azure-analysis-services/tree/master/PauseIfNoQueries)
+
+The PauseIfNoQueries/PauseAzureAnalysisServicesIfNoQueries.ps1 is a PowerShell script that is designed to run in an Azure Automation runbook that runs on a schedule. It does the following:
+
+1. Connects with the Azure Automation RunAs account to confirm your Azure AS server is running
+2. Installs [ADOMD.NET v15](https://www.nuget.org/packages/Microsoft.AnalysisServices.AdomdClient.retail.amd64/) from NuGet
+3. Runs a DISCOVER_SESSIONS DMV to determine if any queries are running
+4. If no queries are running it pauses Azure Analysis Services
+
+Note: This solution will not properly detect all running queries if you have setup replicas in your Azure Analysis Services.
 
 ### ADFv2
 
@@ -87,7 +97,7 @@ If your ETL is orchestrated in SQL Server Integration Services, it is only natur
 * **SSIS/ProcessAzureAS-UsernamePassword.dtsx** - An SSIS package which authenticates using a username and password (which does not have multi-factor auth enabled) and performs a full refresh of the model. This package uses a C# script task. Follow the instructions in the annotation once you open the SSIS package.
 * **SSIS/ProcessAzureAS-App.dtsx** - An SSIS package which authenticates using an AAD application (ClientID and secret). This package uses a C# script task. Follow the instructions in the annotation once you open the SSIS package.
 
-### BackupRestore
+### [BackupRestore](https://github.com/furmangg/automating-azure-analysis-services/tree/master/BackupRestore)
 
 The BackupRestore/BackupSsasRestoreAzureAS.ps1 PowerShell script performs a natively compressed backup of one or more databases on a SQL Server Analysis Services instance.
 
