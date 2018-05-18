@@ -48,6 +48,8 @@ The following modules must be imported to your Azure Automation account:
 * AzureRM.AnalysisServices
 * PackageManagement
 
+The Azure Automation RunAS identity must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
+
 Note: This solution will not properly detect all running queries if you have setup replicas in your Azure Analysis Services.
 
 ### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)
