@@ -44,6 +44,10 @@ The PauseIfNoQueries/PauseAzureAnalysisServicesIfNoQueries.ps1 is a PowerShell s
 3. Runs a DISCOVER_SESSIONS DMV to determine if any queries are running
 4. If no queries are running it pauses Azure Analysis Services
 
+The following modules must be imported to your Azure Automation account: 
+* AzureRM.AnalysisServices
+* PackageManagement
+
 Note: This solution will not properly detect all running queries if you have setup replicas in your Azure Analysis Services.
 
 ### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)

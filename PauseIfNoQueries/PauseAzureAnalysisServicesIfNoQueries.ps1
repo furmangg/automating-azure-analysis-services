@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+    Azure Automation runbook to pause Azure Analysis Services if no queries are running
+.DESCRIPTION
+    From https://github.com/furmangg/automating-azure-analysis-services#pauseifnoqueries
+	A PowerShell script that is designed to run in an Azure Automation runbook that runs on a schedule.
+	The runbook will pause Azure Analysis Services if no queries are running.
+	The script requires the following Modules be imported in your Azure Automation account:
+	 AzureRM.AnalysisServices
+	 PackageManagement
+.PARAMETER serverName
+    The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
+.PARAMETER resourceGroupName
+    The name of your Azure resource group where your Azure AS server resides.
+.NOTES
+    Author: Greg Galloway
+    Date:   5/17/2018   
+#>
 param(
 	[Parameter(Mandatory=$true)]
     [string] $serverName,
