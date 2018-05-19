@@ -1,5 +1,5 @@
 # Automating Azure Analysis Services - Code Samples
-My [SQL Saturday presentation](http://www.sqlsaturday.com/734/Sessions/Details.aspx?sid=77768) (slides available after May 19, 2018) included demos of various ways to automate Azure Analysis Services. These code samples are included here.
+My [SQL Saturday presentation](http://www.sqlsaturday.com/734/Sessions/Details.aspx?sid=77768) (slides [download](http://www.sqlsaturday.com/SessionDownload.aspx?suid=20659)) included demos of various ways to automate Azure Analysis Services. These code samples are included here.
 
 ### [AutoStartAzureAS](https://github.com/furmangg/automating-azure-analysis-services/tree/master/AutoStartAzureAS)
 On premises solutions typically run at full scale 24 hours a day and 7 days a week. The cloud brings elasticity which allows the solution to scale down during off periods or burst up to meet peak capacity. Often this scaling is done on a schedule. The downside of scaling on a predictable schedule is that users don't always operate on a predictable schedule.
@@ -120,6 +120,11 @@ Also requires the Microsoft.WindowsAzure.Storage.dll version 9.1 or higher.
 
 Using Azure Traffic Manager it is possible to build a solution which redirects users to the geographically closest Azure Analysis Services. This [blog post](https://www.artisconsulting.com/blogs/greggalloway/2018/5/11/sending-users-to-the-geographically-nearest-azure-analysis-services) walks through the configuration of this solution. The code is really just one line but is found at AutoStartAzureAS/Default.aspx.cs
 
+
+
+### Questions or Issues
+
+Use the [Issues](https://github.com/furmangg/automating-azure-analysis-services/issues) tab to report bugs or post questions. Better yet, fix the problem yourself and propose changes...
 
 
 ### Proposing Changes
