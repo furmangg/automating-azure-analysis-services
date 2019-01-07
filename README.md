@@ -1,6 +1,8 @@
 # Automating Azure Analysis Services - Code Samples
 My [SQL Saturday presentation](http://www.sqlsaturday.com/734/Sessions/Details.aspx?sid=77768) (slides [download](http://www.sqlsaturday.com/SessionDownload.aspx?suid=20659)) included demos of various ways to automate Azure Analysis Services. These code samples are included here.
 
+A video recording of the session is available courtesy of [UserGroup.tv](http://usergroup.tv/videos/automating-azure-analysis-services).
+
 ### [PauseIfNoQueries](https://github.com/furmangg/automating-azure-analysis-services/tree/master/PauseIfNoQueries)
 
 The PauseIfNoQueries/PauseAzureAnalysisServicesIfNoQueries.ps1 is a PowerShell script that is designed to run in an Azure Automation runbook that runs on a schedule. It does the following:
@@ -19,6 +21,8 @@ The Azure Automation RunAS identity must have admin permissions in SSAS. This is
 Note: This solution will not properly detect all running queries if you have setup replicas in your Azure Analysis Services.
 
 ### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)
+
+These ADFv2 samples were published before ADF supported connecting to web activities with the ADF managed service identity (MSI). Certainly you can use that instead of clientID/secret.
 
 #### ResumeAzureAS
 
