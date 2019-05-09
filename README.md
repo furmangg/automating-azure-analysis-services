@@ -41,7 +41,29 @@ The AAD application must be granted contribute permissions in the Access Control
 
 #### ProcessAzureAS
 
-The ADFv2/ProcessAzureAS.json file (along with ADFv2/dsHttpApiAzureASRefreshes.json and ADFv2/lsHttpApiAzureAS.json files) show how to perform a full refresh of the data inside an Azure Analysis Services model. Unlike other solutions which leverage external services like Azure Logic Apps or custom ADF .NET activities running in Azure Batch, this approach uses only built-in activities which depend on no external services other than Azure Analysis Services.
+The "[ADFv2/ProcessAzureAS MSI.json](https://raw.githubusercontent.com/furmangg/automating-azure-analysis-services/master/ADFv2/ProcessAzureAS%20MSI.json)" file shows how to perform a full refresh of the data inside an Azure Analysis Services model. Unlike other solutions which leverage external services like Azure Logic Apps or custom ADF .NET activities running in Azure Batch, this approach uses only built-in activities which depend on no external services other than Azure Analysis Services. This version uses the ADF Managed Service Identity (MSI). This approach is recommended over the non-MSI version below.
+
+Set the following parameters upon execution of the pipeline:
+* **TenantID** - The GUID identifier for your Azure Active Directory (AAD) tenant. In the Azure Portal go to the Azure Active Directory tab and the Properties tab and copy the Directory ID property.
+* **SubscriptionID** - The GUID identifier for the subscription the Azure Analysis Services instance is running from. To get this ID, go to the Subscriptions tab of the Azure Portal.
+* **Region** - The name of the region (e.g. southcentralus) where the Azure Analysis Services instance lives. This region is used as the beginning of the asazure:// server name for your server.
+* **Server** - The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
+* **DatabaseName** - The name of the database in Azure Analysis Services you wish to process.
+
+The ADF MSI must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
+
+To get the ADF MSI ID, go to the Azure Active Directory blade, Enterprise applications, filter to All Applications, then search for the name of your ADF. Copy the APPLICATION ID column which appears on the right to your clipboard.
+![Getting the ADF MSI ID](images/AdfMsiID.png)
+
+Then get the Directory ID by going to the Azure Active Directory blade and the Properties tab then copying the Directory ID.
+
+Combine these two IDs together as follows and add this "user" as an Analysis Services administrator in SSMS as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
+
+    app:<ApplicationID>@<DirectoryID>
+
+
+
+The [ADFv2/ProcessAzureAS.json](https://raw.githubusercontent.com/furmangg/automating-azure-analysis-services/master/ADFv2/ProcessAzureAS.json) file shows how to perform a full refresh of the data inside an Azure Analysis Services model. Unlike other solutions which leverage external services like Azure Logic Apps or custom ADF .NET activities running in Azure Batch, this approach uses only built-in activities which depend on no external services other than Azure Analysis Services. _This sample was updated May 2019 to simplify it and remove the dependency on an HTTP linked service and dataset._
 
 Set the following parameters upon execution of the pipeline:
 * **TenantID** - The GUID identifier for your Azure Active Directory (AAD) tenant. In the Azure Portal go to the Azure Active Directory tab and the Properties tab and copy the Directory ID property.
