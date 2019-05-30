@@ -52,14 +52,12 @@ Set the following parameters upon execution of the pipeline:
 
 The ADF MSI must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
 
-To get the ADF MSI ID, go to the Azure Active Directory blade, Enterprise applications, filter to All Applications, then search for the name of your ADF. Copy the APPLICATION ID column which appears on the right to your clipboard.
+To get the ADF MSI ID, go to your Azure Data Factory blade blade and the Properties tab. Copy the Managed Identity Application ID value and the Managed Identity Tenant value.
 ![Getting the ADF MSI ID](images/AdfMsiID.png)
-
-Then get the Directory ID by going to the Azure Active Directory blade and the Properties tab then copying the Directory ID.
 
 Combine these two IDs together as follows and add this "user" as an Analysis Services administrator in SSMS as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/).
 
-    app:<ApplicationID>@<DirectoryID>
+    app:<ApplicationID>@<TenantID>
 
 
 
