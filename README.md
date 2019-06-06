@@ -22,8 +22,6 @@ Note: This solution will not properly detect all running queries if you have set
 
 ### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)
 
-These ADFv2 samples were published before ADF supported connecting to web activities with the ADF managed service identity (MSI). Certainly you can use that instead of clientID/secret.
-
 #### ResumeAzureAS
 
 The ADFv2/ResumeAzureAS.json file contains an Azure Data Factory v2 pipeline which is able to resume Azure AS looping until the resume is complete. It uses only Web Activities. There are no dependencies on .NET custom activities or Azure Logic Apps or SSIS.
@@ -37,6 +35,9 @@ Set the following parameters upon execution of the pipeline:
 * **Server** - The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
 
 The AAD application must be granted contribute permissions in the Access Control (IAM) in the Azure Analysis Services.
+
+This ResumeAzureAS sample was published before ADF supported connecting to web activities with the ADF managed service identity (MSI). Certainly you can use that instead of clientID/secret.
+
 
 
 #### ProcessAzureAS
