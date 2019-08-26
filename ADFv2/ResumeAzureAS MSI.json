@@ -1,5 +1,5 @@
 {
-    "name": "ResumeAzureAS MSI",
+    "name": "ResumeAzureAS",
     "properties": {
         "activities": [
             {
@@ -36,13 +36,9 @@
                                     "value": "@concat('https://management.azure.com/subscriptions/',pipeline().parameters.SubscriptionID,'/resourceGroups/',pipeline().parameters.ResourceGroup,'/providers/Microsoft.AnalysisServices/servers/',pipeline().parameters.Server,'/resume?api-version=2016-05-16')",
                                     "type": "Expression"
                                 },
-                                "method": "POST",
-                                "headers": {
-                                    "Authorization": {
-                                        "value": "@concat(string(activity('Login').output.token_type),' ',string(activity('Login').output.access_token))",
-                                        "type": "Expression"
-                                    }
-                                },
+                                "method": "GET",
+                                "linkedServices": [],
+                                "datasets": [],
                                 "authentication": {
                                     "type": "MSI",
                                     "resource": "https://management.azure.com"
@@ -110,11 +106,11 @@
                                     "type": "Expression"
                                 },
                                 "method": "GET",
-                                "headers": {
-                                    "Authorization": {
-                                        "value": "@concat(string(activity('Login').output.token_type),' ',string(activity('Login').output.access_token))",
-                                        "type": "Expression"
-                                    }
+                                "linkedServices": [],
+                                "datasets": [],
+                                "authentication": {
+                                    "type": "MSI",
+                                    "resource": "https://management.azure.com"
                                 }
                             }
                         }
