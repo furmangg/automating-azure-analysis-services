@@ -22,6 +22,8 @@ Note: This solution will not properly detect all running queries if you have set
 
 ### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)
 
+In order to use these samples, in ADF create a new pipeline, then rename it to the name of the sample pipeline. In the top right, click the Code button then copy and paste the raw JSON into the ADF code window and click OK.
+
 #### ResumeAzureAS
 
 The "[ADFv2/ResumeAzureAS MSI.json](https://raw.githubusercontent.com/furmangg/automating-azure-analysis-services/master/ADFv2/ResumeAzureAS%20MSI.json)" file contains an Azure Data Factory v2 pipeline which is able to resume Azure AS looping until the resume is complete. It uses only Web Activities. There are no dependencies on .NET custom activities or Azure Logic Apps or SSIS. This version uses the ADF Managed Service Identity (MSI). This approach is recommended over the non-MSI version below.
