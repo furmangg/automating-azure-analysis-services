@@ -24,7 +24,19 @@ Note: This solution will not properly detect all running queries if you have set
 
 #### ResumeAzureAS
 
-The ADFv2/ResumeAzureAS.json file contains an Azure Data Factory v2 pipeline which is able to resume Azure AS looping until the resume is complete. It uses only Web Activities. There are no dependencies on .NET custom activities or Azure Logic Apps or SSIS.
+The "[ADFv2/ResumeAzureAS MSI.json](https://raw.githubusercontent.com/furmangg/automating-azure-analysis-services/master/ADFv2/ResumeAzureAS%20MSI.json)" file contains an Azure Data Factory v2 pipeline which is able to resume Azure AS looping until the resume is complete. It uses only Web Activities. There are no dependencies on .NET custom activities or Azure Logic Apps or SSIS. This version uses the ADF Managed Service Identity (MSI). This approach is recommended over the non-MSI version below.
+
+Set the following parameters upon execution of the pipeline:
+* **TenantID** - The GUID identifier for your Azure Active Directory (AAD) tenant. In the Azure Portal go to the Azure Active Directory tab and the Properties tab and copy the Directory ID property.
+* **SubscriptionID** - The GUID identifier for the subscription the Azure Analysis Services instance is running from. To get this ID, go to the Subscriptions tab of the Azure Portal.
+* **ResourceGroup** - The name of the resource group where the Azure Analysis Services instance lives.
+* **Server** - The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
+
+The ADF MSI must be granted contribute permissions in the Access Control (IAM) in the Azure Analysis Services. Typing in the name of the ADF will usually find the MSI but if not see the MSI instructions below.
+
+
+
+The "[ADFv2/ResumeAzureAS.json](https://raw.githubusercontent.com/furmangg/automating-azure-analysis-services/master/ADFv2/ResumeAzureAS.json)" file contains an Azure Data Factory v2 pipeline which is able to resume Azure AS looping until the resume is complete. It uses only Web Activities. There are no dependencies on .NET custom activities or Azure Logic Apps or SSIS.
 
 Set the following parameters upon execution of the pipeline:
 * **TenantID** - The GUID identifier for your Azure Active Directory (AAD) tenant. In the Azure Portal go to the Azure Active Directory tab and the Properties tab and copy the Directory ID property.
@@ -35,8 +47,6 @@ Set the following parameters upon execution of the pipeline:
 * **Server** - The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
 
 The AAD application must be granted contribute permissions in the Access Control (IAM) in the Azure Analysis Services.
-
-This ResumeAzureAS sample was published before ADF supported connecting to web activities with the ADF managed service identity (MSI). Certainly you can use that instead of clientID/secret.
 
 
 

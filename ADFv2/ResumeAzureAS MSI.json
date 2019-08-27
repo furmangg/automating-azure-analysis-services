@@ -37,6 +37,10 @@
                                     "type": "Expression"
                                 },
                                 "method": "POST",
+                                "body": {
+                                    "value": "@null",
+                                    "type": "Expression"
+                                },
                                 "linkedServices": [],
                                 "datasets": [],
                                 "authentication": {
