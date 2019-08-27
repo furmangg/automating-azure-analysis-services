@@ -36,7 +36,7 @@
                                     "value": "@concat('https://management.azure.com/subscriptions/',pipeline().parameters.SubscriptionID,'/resourceGroups/',pipeline().parameters.ResourceGroup,'/providers/Microsoft.AnalysisServices/servers/',pipeline().parameters.Server,'/resume?api-version=2016-05-16')",
                                     "type": "Expression"
                                 },
-                                "method": "GET",
+                                "method": "POST",
                                 "linkedServices": [],
                                 "datasets": [],
                                 "authentication": {
@@ -106,8 +106,6 @@
                                     "type": "Expression"
                                 },
                                 "method": "GET",
-                                "linkedServices": [],
-                                "datasets": [],
                                 "authentication": {
                                     "type": "MSI",
                                     "resource": "https://management.azure.com"
