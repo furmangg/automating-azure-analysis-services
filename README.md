@@ -72,6 +72,8 @@ Combine these two IDs together as follows and add this "user" as an Analysis Ser
 
     app:<ApplicationID>@<TenantID>
 
+James Coulter has a [nice write up](https://medium.com/ricoh-digital-services/process-azure-analysis-services-models-with-azure-data-factory-v2-d7c6288f352c) of this sample.
+
 
 
 The [ADFv2/ProcessAzureAS.json](https://raw.githubusercontent.com/furmangg/automating-azure-analysis-services/master/ADFv2/ProcessAzureAS.json) file shows how to perform a full refresh of the data inside an Azure Analysis Services model. Unlike other solutions which leverage external services like Azure Logic Apps or custom ADF .NET activities running in Azure Batch, this approach uses only built-in activities which depend on no external services other than Azure Analysis Services. _This sample was updated May 2019 to simplify it and remove the dependency on an HTTP linked service and dataset._
