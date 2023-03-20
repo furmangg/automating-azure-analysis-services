@@ -21,7 +21,7 @@ catch {
     throw $_.Exception
 }
 
-
+$ErrorActionPreference = "Stop";
 
 
  # Get old status 
