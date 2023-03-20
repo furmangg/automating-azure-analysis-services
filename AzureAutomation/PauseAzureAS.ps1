@@ -20,7 +20,7 @@ catch {
     throw $_.Exception
 }
 
-
+$ErrorActionPreference = "Stop";
 
  # Get old status 
 $OldAsSetting = Get-AzAnalysisServicesServer -ResourceGroupName $ResourceGroupName -Name $ServerName
