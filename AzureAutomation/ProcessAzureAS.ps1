@@ -41,6 +41,8 @@ catch {
     throw $_.Exception
 }
 
+$ErrorActionPreference = "Stop";
+
 $asServer = Get-AzAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName
 
 "Current Azure AS status: $($asServer.State)"
