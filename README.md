@@ -7,16 +7,16 @@ A video recording of the session is available courtesy of [UserGroup.tv](http://
 
 The PauseIfNoQueries/PauseAzureAnalysisServicesIfNoQueries.ps1 is a PowerShell script that is designed to run in an Azure Automation runbook that runs on a schedule. It does the following:
 
-1. Connects with the Azure Automation RunAs account to confirm your Azure AS server is running
+1. Connects with the Azure Automation Managed Identity to confirm your Azure AS server is running
 2. Installs [ADOMD.NET v15](https://www.nuget.org/packages/Microsoft.AnalysisServices.AdomdClient.retail.amd64/) from NuGet
 3. Runs a DISCOVER_SESSIONS DMV to determine if any queries are running
 4. If no queries are running it pauses Azure Analysis Services
 
 The following modules must be imported to your Azure Automation account: 
-* AzureRM.AnalysisServices
+* Az.AnalysisServices
 * PackageManagement
 
-The Azure Automation RunAS identity must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/). It also needs Contribute permissions on the Azure Analysis Services server.
+The Azure Automation Managed Identity must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/). It also needs Contribute permissions on the Azure Analysis Services server.
 
 Note: This solution will not properly detect all running queries if you have setup replicas in your Azure Analysis Services.
 
@@ -24,10 +24,10 @@ Note: This solution will not properly detect all running queries if you have set
 In addition to the PauseIfNoQueries sample which is an Azure Automation runbook, the ProcessAzureAS.ps1 sample processes full an Azure AS database. It also temporarily opens the firewall to the current Azure Automation public IP.
 
 The following modules must be imported to your Azure Automation account: 
-* AzureRM.AnalysisServices
+* Az.AnalysisServices
 * PackageManagement
 
-The Azure Automation RunAS identity must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/). It also needs Contribute permissions on the Azure Analysis Services server.
+The Azure Automation Managed Identity must have admin permissions in SSAS. This is not accomplished through the Azure portal but through SQL Server Management Studio as described [here](https://azure.microsoft.com/en-us/blog/automation-of-azure-analysis-services-with-service-principals-and-powershell/). It also needs Contribute permissions on the Azure Analysis Services server.
 
 ### [ADFv2](https://github.com/furmangg/automating-azure-analysis-services/tree/master/ADFv2)
 
