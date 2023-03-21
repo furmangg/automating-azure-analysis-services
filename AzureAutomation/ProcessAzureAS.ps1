@@ -7,7 +7,7 @@
 	The runbook will process full the specified database. It will temporarily open the firewall to the current Azure Automation public IP.
 	The Azure Automation runas account needs Contributor permissions on the Azure Analysis Services server and inside SSMS you need to grant that runas account server administrator permissions.
 	The script requires the following Modules be imported in your Azure Automation account:
-	 AzureRM.AnalysisServices
+	 Az.AnalysisServices
 	 PackageManagement
 .PARAMETER serverName
     The name of your Azure Analysis Services instance. This is not the full asazure:// URI. This is just the final section saying the name of your server.
@@ -31,19 +31,25 @@ param
     [string] $CubeDatabaseName
 )
 
+try
+{
+    "Logging in to Azure..."
+    Connect-AzAccount -Identity
+}
+catch {
+    Write-Error -Message $_.Exception
+    throw $_.Exception
+}
+
 $ErrorActionPreference = "Stop";
 
-$runAsConnectionProfile = Get-AutomationConnection -Name "AzureRunAsConnection"      
-Add-AzureRmAccount -ServicePrincipal -TenantId $runAsConnectionProfile.TenantId `
-	-ApplicationId $runAsConnectionProfile.ApplicationId -CertificateThumbprint $runAsConnectionProfile.CertificateThumbprint | Out-Null
-
-$asServer = Get-AzureRmAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName
+$asServer = Get-AzAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName
 
 "Current Azure AS status: $($asServer.State)"
 
 if ($asServer.State -eq "Paused")
 {
-	$asServer | Resume-AzureRmAnalysisServicesServer -Verbose
+	$asServer | Resume-AzAnalysisServicesServer -Verbose
 }
 
 if ($asServer.FirewallConfig -ne $null)
@@ -64,9 +70,9 @@ if ($asServer.FirewallConfig -ne $null)
     $ipinfo = Invoke-RestMethod http://ipinfo.io/json
 
     #add a new AzureAutomation firewall rule
-    $newRule = New-AzureRmAnalysisServicesFirewallRule -FirewallRuleName "AzureAutomation" -RangeStart $ipinfo.ip  -RangeEnd $ipinfo.ip
+    $newRule = New-AzAnalysisServicesFirewallRule -FirewallRuleName "AzureAutomation" -RangeStart $ipinfo.ip  -RangeEnd $ipinfo.ip
     $asServer.FirewallConfig.FirewallRules.Add($newRule)
-    Set-AzureRmAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName -FirewallConfig $asServer.FirewallConfig
+    Set-AzAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName -FirewallConfig $asServer.FirewallConfig
 
     "Updated Azure AS firewall to allow current Azure Automation Public IP: " + $ipinfo.ip
 }
@@ -128,6 +134,6 @@ if ($asServer.FirewallConfig -ne $null)
     #reset firewall to the state it was in before this script started
     $asServer.FirewallConfig.FirewallRules.Clear()
     $asServer.FirewallConfig.FirewallRules.AddRange($rulesBackup)
-    Set-AzureRmAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName -FirewallConfig $asServer.FirewallConfig
+    Set-AzAnalysisServicesServer -ResourceGroupName $resourceGroupName -Name $serverName -FirewallConfig $asServer.FirewallConfig
     "Reset Azure AS firewall rules"
 }
