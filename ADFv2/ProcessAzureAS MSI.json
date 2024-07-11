@@ -7,7 +7,7 @@
                 "type": "Until",
                 "dependsOn": [
                     {
-                        "activity": "FilterToCurrentRefresh",
+                        "activity": "StartProcessingAzureAS",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -39,11 +39,15 @@
                             },
                             "userProperties": [],
                             "typeProperties": {
+                                "method": "GET",
                                 "url": {
-                                    "value": "@concat('https://',pipeline().parameters.Region,'.asazure.windows.net/servers/',pipeline().parameters.Server,'/models/',pipeline().parameters.DatabaseName,'/refreshes/',activity('FilterToCurrentRefresh').output.Value[0].refreshId)",
+                                    "value": "@activity('StartProcessingAzureAS').output.ADFWebActivityResponseHeaders.Location",
                                     "type": "Expression"
                                 },
-                                "method": "GET",
+                                "connectVia": {
+                                    "referenceName": "AutoResolveIntegrationRuntime",
+                                    "type": "IntegrationRuntimeReference"
+                                },
                                 "authentication": {
                                     "type": "MSI",
                                     "resource": "https://*.asazure.windows.net"
@@ -75,11 +79,16 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
+                    "method": "POST",
+                    "turnOffAsync": true,
                     "url": {
                         "value": "@concat('https://',pipeline().parameters.Region,'.asazure.windows.net/servers/',pipeline().parameters.Server,'/models/',pipeline().parameters.DatabaseName,'/refreshes')",
                         "type": "Expression"
                     },
-                    "method": "POST",
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
                     "body": {
                         "Type": "Full",
                         "CommitMode": "transactional",
@@ -124,69 +133,6 @@
                             }
                         }
                     ]
-                }
-            },
-            {
-                "name": "GetAzureASRefreshes",
-                "type": "WebActivity",
-                "dependsOn": [
-                    {
-                        "activity": "StartProcessingAzureAS",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "url": {
-                        "value": "@concat('https://',pipeline().parameters.Region,'.asazure.windows.net/servers/',pipeline().parameters.Server,'/models/',pipeline().parameters.DatabaseName,'/refreshes')",
-                        "type": "Expression"
-                    },
-                    "connectVia": {
-                        "referenceName": "AutoResolveIntegrationRuntime",
-                        "type": "IntegrationRuntimeReference"
-                    },
-                    "method": "GET",
-                    "body": {
-                        "Type": "Full",
-                        "CommitMode": "transactional",
-                        "MaxParallelism": 10,
-                        "RetryCount": 2
-                    },
-                    "authentication": {
-                        "type": "MSI",
-                        "resource": "https://*.asazure.windows.net"
-                    }
-                }
-            },
-            {
-                "name": "FilterToCurrentRefresh",
-                "type": "Filter",
-                "dependsOn": [
-                    {
-                        "activity": "GetAzureASRefreshes",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "userProperties": [],
-                "typeProperties": {
-                    "items": {
-                        "value": "@json(activity('GetAzureASRefreshes').output.Response)",
-                        "type": "Expression"
-                    },
-                    "condition": {
-                        "value": "@greaterOrEquals(item().startTime,addseconds(activity('StartProcessingAzureAS').output.startTime,-30))",
-                        "type": "Expression"
-                    }
                 }
             }
         ],
